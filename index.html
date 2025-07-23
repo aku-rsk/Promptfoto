@@ -4,67 +4,101 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Prompt Generator Custom Potret</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; }
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Poppins', sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #1e1e1e;
-      color: #f1f1f1;
+      background-color: #ffffff;
+      color: #1e1e1e;
     }
     h1, h2 {
       text-align: center;
       padding: 20px;
+      font-weight: 600;
     }
     .container {
-      max-width: 100%;
-      padding: 15px;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
     }
     label {
       display: block;
       margin-top: 15px;
       font-size: 0.95rem;
-      font-weight: bold;
+      font-weight: 600;
     }
-    select, input, textarea, button {
+    select, input, textarea {
       width: 100%;
       padding: 10px;
       margin-top: 5px;
       font-size: 1rem;
-      border-radius: 5px;
-      border: none;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+      color: #1e1e1e;
+      transition: border 0.3s ease;
     }
-    select, input, textarea {
-      background-color: #2c2c2c;
-      color: #f1f1f1;
+    select:focus, input:focus, textarea:focus {
+      outline: none;
+      border-color: #4caf50;
     }
     button {
-      background-color: #4caf50;
+      background: linear-gradient(to right, #4caf50, #2196f3);
       color: white;
-      margin-top: 15px;
+      font-weight: 600;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
       cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: linear-gradient(to right, #66bb6a, #42a5f5);
+    }
+    .button-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .button-row button {
+      flex: 1;
     }
     textarea {
       resize: vertical;
       min-height: 120px;
     }
     #preview {
-      margin-top: 20px;
-      padding: 15px;
-      background: #333;
-      border-radius: 5px;
-      min-height: 60px;
+      margin-top: 25px;
+      padding: 20px;
+      background: #f2f2f2;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      font-family: monospace;
+      font-size: 0.95rem;
+      line-height: 1.6;
       white-space: pre-wrap;
+      color: #333;
+    }
+    .creator {
+      text-align: center;
+      padding: 10px;
+      font-size: 0.9rem;
+      color: #777;
     }
     @media (max-width: 600px) {
-      h1 { font-size: 1.2rem; padding: 15px 10px; }
+      h1 { font-size: 1.3rem; }
       label { font-size: 0.9rem; }
-      button { font-size: 0.95rem; }
+      .button-row { flex-direction: column; }
+      .button-row button { width: 100%; }
     }
   </style>
 </head>
 <body>
+
+  <div class="creator">Create by AkuRSK</div>
 
   <div class="container" id="loginForm">
     <h2>Login</h2>
@@ -81,144 +115,14 @@
     <label>Prompt Hasil:</label>
     <textarea id="output" readonly></textarea>
 
-    <button onclick="generatePrompt()">Buat Prompt</button>
-    <button onclick="copyPrompt()">Salin Prompt</button>
-    <button onclick="downloadPrompt()">Unduh Prompt</button>
+    <div class="button-row">
+      <button onclick="generatePrompt()">Buat Prompt</button>
+      <button onclick="copyPrompt()">Salin Prompt</button>
+      <button onclick="downloadPrompt()">Unduh Prompt</button>
+    </div>
 
     <div id="preview"></div>
   </div>
 
-  <script>
-    const fields = [
-      "style", "gender", "hair", "expression", "baju", "warnaBaju", "celana",
-      "warnaCelana", "sepatu", "warnaSepatu", "aksesoris", "posisi", "background",
-      "lighting", "tone", "ratio", "vibe", "waktu", "cuaca"
-    ];
-
-    const labels = {
-      style: "Gaya",
-      gender: "Jenis Kelamin",
-      hair: "Gaya Rambut",
-      expression: "Ekspresi",
-      baju: "Baju yang dipakai",
-      warnaBaju: "Warna Baju",
-      celana: "Celana yang dipakai",
-      warnaCelana: "Warna Celana",
-      sepatu: "Sepatu yang dipakai",
-      warnaSepatu: "Warna Sepatu",
-      aksesoris: "Aksesoris",
-      posisi: "Posisi",
-      background: "Latar Belakang",
-      lighting: "Pencahayaan",
-      tone: "Tone Warna",
-      ratio: "Rasio Gambar",
-      vibe: "Kesan",
-      waktu: "Waktu",
-      cuaca: "Cuaca"
-    };
-
-    const options = {
-      style: ["Formal", "Kasual", "Street Style", "Smart-Casual", "Monochrome", "Artist", "Futuristik", "Vintage", "Military"],
-      gender: ["pria Asia Tenggara", "wanita Asia Timur", "pria Eropa", "wanita kulit gelap"],
-      hair: ["disisir rapi ke samping", "berponi", "botak", "keriting alami"],
-      expression: ["percaya diri dan tenang", "senyum lebar", "serius dan tajam", "santai dan ceria"],
-      baju: ["jas hitam dan kemeja putih", "kaos polos", "jaket kulit", "kemeja flanel"],
-      warnaBaju: ["hitam dan putih", "biru dongker", "coklat tua", "abu-abu"],
-      celana: ["celana panjang formal", "jeans", "chino", "celana pendek"],
-      warnaCelana: ["hitam", "biru", "coklat", "khaki"],
-      sepatu: ["pantofel kulit", "sneakers", "sepatu boot", "sandal"],
-      warnaSepatu: ["hitam", "putih", "coklat", "abu-abu"],
-      aksesoris: ["jam tangan", "kacamata", "cincin", "anting"],
-      posisi: ["berdiri tegap", "duduk santai", "berjalan", "bersandar"],
-      background: ["merah solid gelap", "tembok polos", "alam terbuka", "kota malam"],
-      lighting: ["kontras tinggi", "lembut alami", "dramatis", "studio"],
-      tone: ["hangat", "dingin", "monokrom", "pastel"],
-      ratio: ["9:16", "1:1", "4:5", "3:4"],
-      vibe: ["profesional", "modern", "klasik", "santai"],
-      waktu: ["pagi", "siang", "sore", "malam"],
-      cuaca: ["cerah", "mendung", "berawan terang", "gerimis"]
-    };
-
-    function createField(id) {
-      const label = document.createElement("label");
-      label.textContent = labels[id] + " (bisa custom):";
-
-      const select = document.createElement("select");
-      select.id = id;
-      options[id].forEach(opt => {
-        const o = document.createElement("option");
-        o.value = opt;
-        o.textContent = opt;
-        select.appendChild(o);
-      });
-      const customOption = document.createElement("option");
-      customOption.value = "Custom";
-      customOption.textContent = "Custom...";
-      select.appendChild(customOption);
-
-      const customInput = document.createElement("input");
-      customInput.type = "text";
-      customInput.id = id + "Custom";
-      customInput.placeholder = "Masukkan " + labels[id].toLowerCase() + " custom";
-      customInput.style.display = "none";
-
-      select.addEventListener("change", () => {
-        customInput.style.display = select.value === "Custom" ? "block" : "none";
-      });
-
-      const container = document.getElementById("formFields");
-      container.appendChild(label);
-      container.appendChild(select);
-      container.appendChild(customInput);
-    }
-
-    function initForm() {
-      fields.forEach(id => createField(id));
-    }
-
-    function getValue(selectId, customId) {
-      const select = document.getElementById(selectId);
-      const custom = document.getElementById(customId);
-      return select.value === "Custom" ? custom.value : select.value;
-    }
-
-    function generatePrompt() {
-      const values = {};
-      fields.forEach(id => values[id] = getValue(id, id + "Custom"));
-      const prompt = `Potret seorang ${values.gender} dengan gaya ${values.style}, mengenakan ${values.baju} berwarna ${values.warnaBaju} dan ${values.celana} berwarna ${values.warnaCelana}, sepatu ${values.sepatu} berwarna ${values.warnaSepatu}, dilengkapi dengan aksesoris seperti ${values.aksesoris}. Posisi ${values.posisi}. Gaya rambut ${values.hair}, ekspresi ${values.expression}. Latar belakang ${values.background}. Pencahayaan ${values.lighting}. Tone warna ${values.tone}. Rasio gambar ${values.ratio}, menonjolkan kesan ${values.vibe} pada waktu ${values.waktu} dengan kondisi cuaca ${values.cuaca}.`;
-      document.getElementById("output").value = prompt;
-      document.getElementById("preview").textContent = prompt;
-    }
-
-    function copyPrompt() {
-      const output = document.getElementById("output");
-      output.select();
-      document.execCommand("copy");
-      alert("Prompt berhasil disalin!");
-    }
-
-    function downloadPrompt() {
-      const promptText = document.getElementById("output").value;
-      const blob = new Blob([promptText], { type: "text/plain;charset=utf-8" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "prompt.txt";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-
-    function login() {
-      const u = document.getElementById("username").value.trim();
-      const p = document.getElementById("password").value.trim();
-      if ((u === "admin" && p === "1234") || (u === "user" && p === "user123")) {
-        document.getElementById("loginForm").style.display = "none";
-        document.getElementById("mainContent").style.display = "block";
-        initForm();
-      } else {
-        alert("Username atau password salah!");
-      }
-    }
-  </script>
 </body>
 </html>
