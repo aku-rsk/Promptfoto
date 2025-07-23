@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #39b3a9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      padding: 40px 30px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .card h2 {
+      margin-bottom: 30px;
+      color: #39b3a9;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .input-group i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #777;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 15px 12px 40px;
+      border: none;
+      border-radius: 8px;
+      background-color: #f2f2f2;
+      font-size: 1rem;
+    }
+
+    .login-btn {
+      width: 100%;
+      background-color: #39b3a9;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .login-btn:hover {
+      background-color: #2fa096;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Login</h2>
+
+    <div class="input-group">
+      <i class="fa fa-user"></i>
+      <input type="text" placeholder="Username" id="username" />
+    </div>
+
+    <div class="input-group">
+      <i class="fa fa-lock"></i>
+      <input type="password" placeholder="Password" id="password" />
+    </div>
+
+    <button class="login-btn" onclick="login()">Login</button>
+  </div>
+
+  <script>
+    function login() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (username === "admin" && password === "1234") {
+        alert("Login Admin berhasil!");
+        // window.location.href = "admin_dashboard.html";
+      } else if (username === "user" && password === "user123") {
+        alert("Login User berhasil!");
+        // window.location.href = "user_dashboard.html";
+      } else {
+        alert("Username atau password salah!");
+      }
+    }
+  </script>
+
+</body>
+</html>
