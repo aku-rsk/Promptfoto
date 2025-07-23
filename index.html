@@ -1,0 +1,178 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prompt Generator Custom Potret</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #1e1e1e;
+      color: #f1f1f1;
+    }
+    h1 {
+      text-align: center;
+      padding: 20px;
+      font-size: 1.5rem;
+    }
+    .container {
+      max-width: 100%;
+      padding: 15px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-size: 0.95rem;
+      font-weight: bold;
+    }
+    select, input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: none;
+    }
+    select, input, textarea {
+      background-color: #2c2c2c;
+      color: #f1f1f1;
+    }
+    button {
+      background-color: #4caf50;
+      color: white;
+      margin-top: 15px;
+      cursor: pointer;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    #preview {
+      margin-top: 20px;
+      padding: 15px;
+      background: #333;
+      border-radius: 5px;
+      min-height: 60px;
+      white-space: pre-wrap;
+    }
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.2rem;
+        padding: 15px 10px;
+      }
+      label {
+        font-size: 0.9rem;
+      }
+      button {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Prompt Generator Custom Potret</h1><label>Gaya:</label>
+<select id="style">
+  <option value="Formal">Formal</option>
+  <option value="Kasual">Kasual</option>
+  <option value="Street Style">Street Style</option>
+  <option value="Smart-Casual">Smart-Casual</option>
+  <option value="Monochrome">Monochrome</option>
+  <option value="Artist">Artist</option>
+  <option value="Futuristik">Futuristik</option>
+  <option value="Vintage">Vintage</option>
+  <option value="Military">Military</option>
+  <option value="">Custom...</option>
+</select>
+
+<label>Jenis Kelamin:</label>
+<input type="text" id="gender" value="pria Asia Tenggara" />
+
+<label>Gaya Rambut:</label>
+<input type="text" id="hair" value="disisir rapi ke samping" />
+
+<label>Ekspresi:</label>
+<input type="text" id="expression" value="percaya diri dan tenang" />
+
+<label>Baju yang dipakai:</label>
+<input type="text" id="baju" value="jas hitam dan kemeja putih" />
+
+<label>Warna Baju:</label>
+<input type="text" id="warnaBaju" value="hitam dan putih" />
+
+<label>Celana yang dipakai:</label>
+<input type="text" id="celana" value="celana panjang formal" />
+
+<label>Warna Celana:</label>
+<input type="text" id="warnaCelana" value="hitam" />
+
+<label>Sepatu yang dipakai:</label>
+<input type="text" id="sepatu" value="pantofel kulit hitam mengkilap" />
+
+<label>Aksesoris:</label>
+<input type="text" id="aksesoris" value="jam tangan logam, cincin minimalis, dan kacamata stylish" />
+
+<label>Posisi:</label>
+<input type="text" id="posisi" value="berdiri tegap dengan tangan menyilang" />
+
+<label>Latar Belakang:</label>
+<input type="text" id="background" value="merah solid gelap" />
+
+<label>Pencahayaan:</label>
+<input type="text" id="lighting" value="kontras tinggi dengan satu cahaya dari kanan atas" />
+
+<label>Tone Warna:</label>
+<input type="text" id="tone" value="hangat dengan aksen kekuningan" />
+
+<label>Rasio Gambar:</label>
+<input type="text" id="ratio" value="9:16" />
+
+<label>Kesan:</label>
+<input type="text" id="vibe" value="profesional, modern, dan powerful" />
+
+<label>Waktu:</label>
+<input type="text" id="waktu" value="sore" />
+
+<label>Cuaca:</label>
+<input type="text" id="cuaca" value="berawan terang" />
+
+<label>Prompt Hasil:</label>
+<textarea id="output" readonly></textarea>
+
+<button onclick="generatePrompt()">Buat Prompt</button>
+<button onclick="copyPrompt()">Salin Prompt</button>
+<button onclick="downloadPrompt()">Unduh Prompt</button>
+
+<div id="preview"></div>
+
+  </div>  <script>
+    function generatePrompt() {
+      const get = (id) => document.getElementById(id).value;
+      const prompt = `Potret seorang ${get("gender")} dengan gaya ${get("style")}, mengenakan ${get("baju")} berwarna ${get("warnaBaju")} dan ${get("celana")} berwarna ${get("warnaCelana")}, sepatu ${get("sepatu")}, dilengkapi dengan aksesoris seperti ${get("aksesoris")}. Posisi ${get("posisi")}. Gaya rambut ${get("hair")}, ekspresi ${get("expression")}. Latar belakang ${get("background")}. Pencahayaan ${get("lighting")}. Tone warna ${get("tone")}. Rasio gambar ${get("ratio")}, menonjolkan kesan ${get("vibe")} pada waktu ${get("waktu")} dengan kondisi cuaca ${get("cuaca")}.`;
+      document.getElementById("output").value = prompt;
+      document.getElementById("preview").textContent = prompt;
+    }
+
+    function copyPrompt() {
+      const output = document.getElementById("output");
+      output.select();
+      document.execCommand("copy");
+      alert("Prompt berhasil disalin!");
+    }
+
+    function downloadPrompt() {
+      const promptText = document.getElementById("output").value;
+      const blob = new Blob([promptText], { type: "text/plain;charset=utf-8" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "prompt.txt";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script></body>
+</html>
